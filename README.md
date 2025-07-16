@@ -1,2 +1,2 @@
 # cafe-diary-api
-Practicing creating RESTful API + MongoDB
+The purpose of this repo is to re-practice creating RESTful API with MongoDB
