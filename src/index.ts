@@ -1,16 +1,22 @@
 import express from "express";
-import cafeRoutes from "./routes/cafeRoutes";
+import { connectToDatabase } from "./services/database.service";
+import { cafesRouter } from "./routes/cafes.router";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.json());
-app.use("/api", cafeRoutes);
+app.use("/api", cafesRouter);
 
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Welcome to the Node.js + TypeScript API!");
-// });
+connectToDatabase()
+  .then(() => {
+    app.use("/cafes", cafesRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+    app.listen(port, () => {
+      console.log(`Server started at http://localhost:${port}`);
+    });
+  })
+  .catch((error: Error) => {
+    console.error("Database connection failed", error);
+    process.exit();
+  });
